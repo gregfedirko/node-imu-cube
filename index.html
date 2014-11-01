@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <body>
+
+    <style type="text/css">
+      body {
+        background-color: black;
+      }
+    </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.js"></script>
+
+
+    <script type="text/javascript">
+          var scene, camera, renderer;
+      var WIDTH  = window.innerWidth;
+      var HEIGHT = window.innerHeight;
+      var SPEED = 0.01;
+
+      function init() {
+          scene = new THREE.Scene();
+          initCube();
+          initCamera();
+          initRenderer();
+          document.body.appendChild(renderer.domElement);
+      }
+      function initCamera() {
+          camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
+          camera.position.set(0, 3.5, 5);
+          camera.lookAt(scene.position);
+      }
+      function initRenderer() {
+          renderer = new THREE.WebGLRenderer({ antialias: true });
+          renderer.setSize(WIDTH, HEIGHT);
+      }
+      function initCube() {
+          cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3), new THREE.MeshNormalMaterial());
+          scene.add(cube);
+      }
+      function render() {
+          requestAnimationFrame(render);
+          renderer.render(scene, camera);
+      }
+
+      var angle = 0;
+      init();
+      render();
+
+      //////////////////////////////////////////////////
+
+      var socket = io();
+
+      socket.on('data', function(data){
+
+        var dataArray = data.data.split("\t");
+        // console.log(dataArray);
+        rotateCube(Number(dataArray[1]), Number(dataArray[2]), Number(dataArray[3]));
+
+      });
+
+      function rotateCube(yaw, pitch, roll) {
+          cube.rotation.x = roll * (Math.PI/180);
+          cube.rotation.z = pitch * (Math.PI/180);
+          cube.rotation.y = yaw * (Math.PI/180);
+      }
+
+    </script>
+  </body>
+</html>
