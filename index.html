@@ -27,7 +27,7 @@
       }
       function initCamera() {
           camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
-          camera.position.set(0, 3.5, 5);
+          camera.position.set(0, 5, 7);
           camera.lookAt(scene.position);
       }
       function initRenderer() {
@@ -35,7 +35,7 @@
           renderer.setSize(WIDTH, HEIGHT);
       }
       function initCube() {
-          cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3), new THREE.MeshNormalMaterial());
+          cube = new THREE.Mesh(new THREE.CubeGeometry(4, 4, 4), new THREE.MeshNormalMaterial());
           scene.add(cube);
       }
       function render() {
